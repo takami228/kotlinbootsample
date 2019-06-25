@@ -10,12 +10,6 @@ plugins {
 	kotlin("kapt") version "1.2.71"
 }
 
-allOpen {
-	annotation("javax.persistence.Entity")
-	annotation("javax.persistence.Embeddable")
-	annotation("javax.persistence.MappedSuperclass")
-}
-
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -42,6 +36,14 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "junit")
+		exclude(module = "mockito-core")
+	}
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+	testImplementation("com.ninja-squad:springmockk:1.1.2")
 }
 
 tasks.withType<KotlinCompile> {
@@ -51,14 +53,10 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-dependencies {
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(module = "junit")
-		exclude(module = "mockito-core")
-	}
-	testImplementation("org.junit.jupiter:junit-jupiter-api")
-	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-	testImplementation("com.ninja-squad:springmockk:1.1.2")
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.Embeddable")
+	annotation("javax.persistence.MappedSuperclass")
 }
 
 tasks.withType<Test> {
